@@ -24,7 +24,7 @@ public class Druide extends Gaulois {
 		}
 		parler(texte + "de force " + forcePotion + ".");
 	}
-	
+
 	public void booster(Gaulois gaulois) {
 		if (gaulois.getNom().equals("Obélix")) {
 			parler("Non, Obélix !... Tu n'auras pas de potion magique !");

@@ -15,9 +15,7 @@ public class Gaulois extends Personnage {
 	@Override
 	public String toString() {
 		String etatPersonnage = super.toString();
-		return "Gaulois " 
-				+ etatPersonnage.substring(0, etatPersonnage.length() - 1) 
-				+ ", effetPotion=" + effetPotion
+		return "Gaulois " + etatPersonnage.substring(0, etatPersonnage.length() - 1) + ", effetPotion=" + effetPotion
 				+ "]";
 	}
 

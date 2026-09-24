@@ -18,7 +18,7 @@ public class Personnage {
 	public String getNom() {
 		return nom;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "[nom=" + nom + ", force=" + force + "]";
