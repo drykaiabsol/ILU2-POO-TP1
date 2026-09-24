@@ -8,10 +8,12 @@ public class Village {
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
+	private Marche marche;
 
 	public Village(String nom, int nbVillageoisMaximum) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
+		this.marche = new Marche(nbEtals);
 	}
 
 	public String getNom() {
@@ -89,11 +91,9 @@ public class Village {
 				}
 			}
 			Etal[] etalsTrouves = new Etal[nbEtalsProduit(produit)];
-			int index = 0;
-			for (int i = 0; i < etals.length; i++) {
+			for (int i = 0, index = 0; i < etals.length; i++, index++) {
 				if (etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
 					etalsTrouves[index] = etals[i];
-					index++;
 				}
 			}
 			return etalTrouves;
