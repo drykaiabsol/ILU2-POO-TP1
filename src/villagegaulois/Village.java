@@ -89,9 +89,34 @@ public class Village {
 				}
 			}
 			Etal[] etalsTrouves = new Etal[nbEtalsProduit(produit)];
-			for (int i = 0; i<etals.length; i++) {
-				if (etals[i].contientProduit(produit))
+			int index = 0;
+			for (int i = 0; i < etals.length; i++) {
+				if (etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
+					etalsTrouves[index] = etals[i];
+					index++;
+				}
 			}
+			return etalTrouves;
+		}
+
+		public Etal trouverVendeur(Gaulois gaulois) {
+			for (int i = 0; i < etals.length; i++) {
+				if (!etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
+					return etals[i];
+				}
+			}
+			return null;
+		}
+
+		public afficherMarche() {
+			int nbEtalsLibre = 0;
+			for (int i = 0; i < etals.length; i++) {
+				if (!etals[i].isEtalOccupe()) {
+					nbEtalsLibre++;
+				}
+				System.out.println(etals[i].afficheEtal());
+			}
+			System.out.println("Il reste " + nbEtalVide + " étals non utilisés dans le marché.\n");
 		}
 	}
 }
