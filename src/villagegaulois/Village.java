@@ -56,6 +56,18 @@ public class Village {
 		}
 		return chaine.toString();
 	}
+	
+	public string installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
+		StringBuilder chaine = new StringBuilder();
+		chaine.append(vendeur.getNom());
+		chaine.append("cherche un endroit pour vendre");
+		chaine.append(nbProduit);
+		chaine.append(produit);
+		chaine.append("\n");
+		chaine.append("Le vendeur" + vendeur.getNom() + "vend des fleurs à l'étal" + );
+		chaine.append(vendeur.getNom());
+		chaine.append("vend les fleurs à l'étal");
+	}
 
 	private static class Marche()
 	{
