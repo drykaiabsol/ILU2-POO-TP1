@@ -1,6 +1,8 @@
 package histoire;
 import personnages.Gaulois;
 import villagegaulois.Etal;
+import villagegaulois.Village;
+import villagegaulois.VillageSansChefException;
 
 
 public class ScenarioCasDegrade {
@@ -14,6 +16,12 @@ public class ScenarioCasDegrade {
 		} catch (IllegalArgumentException e) {
 		    e.printStackTrace();
 		} catch (IllegalStateException e) {
+		    e.printStackTrace();
+		}
+		try {
+		    Village villageSansChef = new Village("Village Test", 10, 5);
+		    villageSansChef.afficherVillageois();
+		} catch (VillageSansChefException e) {
 		    e.printStackTrace();
 		}
 		System.out.println("Fin du test");
