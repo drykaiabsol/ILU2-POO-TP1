@@ -10,7 +10,7 @@ public class Village {
 	private int nbVillageois = 0;
 	private Marche marche;
 
-	public Village(String nom, int nbVillageoisMaximum) {
+	public Village(String nom, int nbVillageoisMaximum, int nbEtals) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
 		this.marche = new Marche(nbEtals);
@@ -57,32 +57,93 @@ public class Village {
 		return chaine.toString();
 	}
 	
-	public string installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
-		StringBuilder chaine = new StringBuilder();
-		chaine.append(vendeur.getNom());
-		chaine.append("cherche un endroit pour vendre");
-		chaine.append(nbProduit);
-		chaine.append(produit);
-		chaine.append("\n");
-		chaine.append("Le vendeur" + vendeur.getNom() + "vend des fleurs à l'étal" + );
-		chaine.append(vendeur.getNom());
-		chaine.append("vend les fleurs à l'étal");
+	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
+	    StringBuilder chaine = new StringBuilder();
+	    chaine.append(vendeur.getNom());
+	    chaine.append(" cherche un endroit pour vendre ");
+	    chaine.append(nbProduit);
+	    chaine.append(" ");
+	    chaine.append(produit);
+	    chaine.append(".\n");
+	    
+	    int indiceEtal = marche.trouverEtalLibre();
+	    if (indiceEtal != -1) {
+	        marche.utiliserEtal(indiceEtal, vendeur, produit, nbProduit);
+	        chaine.append("Le vendeur ");
+	        chaine.append(vendeur.getNom());
+	        chaine.append(" vend des ");
+	        chaine.append(produit);
+	        chaine.append(" à l'étal n°");
+	        chaine.append(indiceEtal + 1);
+	        chaine.append(".\n");
+	    }
+	    
+	    return chaine.toString();
 	}
 
-	private static class Marche()
+	public String afficherMarche() {
+	    StringBuilder chaine = new StringBuilder();
+	    chaine.append("Le marché du village \"");
+	    chaine.append(nom);
+	    chaine.append("\" possède plusieurs étals :\n");
+	    chaine.append(marche.afficherMarche()); 
+	    
+	    return chaine.toString();
+	}
+	
+	public Etal rechercherEtal(Gaulois vendeur){
+	    return marche.trouverVendeur(vendeur);
+	}
+	
+	public String partirVendeur(Gaulois vendeur) {
+	    Etal etal = rechercherEtal(vendeur);
+	    if (etal != null) {
+	        return etal.libererEtal();
+	    }
+	    return vendeur.getNom() + " n'était pas installé au marché.\n";
+	}
+	
+	public String rechercherVendeursProduit(String produit) {
+	    StringBuilder chaine = new StringBuilder();
+	    Etal[] etalsProduit = marche.trouverEtals(produit);
+	    
+	    if (etalsProduit.length == 0) {
+	        chaine.append("Il n'y a pas de vendeur qui propose des ");
+	        chaine.append(produit);
+	        chaine.append(" au marché.\n");
+	    } else if (etalsProduit.length == 1) {
+	        chaine.append("Seul le vendeur ");
+	        chaine.append(etalsProduit[0].getVendeur().getNom());
+	        chaine.append(" propose des ");
+	        chaine.append(produit);
+	        chaine.append(" au marché.\n");
+	    } else {
+	        chaine.append("Les vendeurs qui proposent des ");
+	        chaine.append(produit);
+	        chaine.append(" sont :\n");
+	        for (int i = 0; i < etalsProduit.length; i++) {
+	            chaine.append("- ");
+	            chaine.append(etalsProduit[i].getVendeur().getNom());
+	            chaine.append("\n");
+	        }
+	    }
+	    return chaine.toString();
+	}
+	
+	private class Marche
 	{
 		private Etal[] etals;
 
 		public Marche(int nbEtals) {
 			this.etals = new Etal[nbEtals];
 			for (int i = 0; i < nbEtals; i++) {
-				this.etals = new Etal();
+				this.etals[i] = new Etal();
 			}
 		}
 
 		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
 			if (indiceEtal >= 0 && indiceEtal < etals.length) {
-				etals[indiceEtals].occuperEtal(vendeur, produit, nbProduit);
+				etals[indiceEtal].occuperEtal(vendeur, produit, nbProduit);
 			}
 		}
 
@@ -96,39 +157,51 @@ public class Village {
 		}
 
 		public Etal[] trouverEtals(String produit) {
-			int nbProduit = 0;
-			for (int i = 0; i < etals.length; i++) {
-				if (etal.isEtalOccupe() && etal.contientProduit(produit)) {
-					nbEtalsProduit++;
-				}
-			}
-			Etal[] etalsTrouves = new Etal[nbEtalsProduit(produit)];
-			for (int i = 0, index = 0; i < etals.length; i++, index++) {
-				if (etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
-					etalsTrouves[index] = etals[i];
-				}
-			}
-			return etalTrouves;
+		    int nbEtalsProduit = 0;
+		    for (int i = 0; i < etals.length; i++) {
+		        if (etals[i].isEtalOccupe() && etals[i].contientProduit(produit)) {
+		            nbEtalsProduit++;
+		        }
+		    }
+		    
+		    Etal[] etalsTrouves = new Etal[nbEtalsProduit];
+		    int index = 0;
+		    for (int i = 0; i < etals.length; i++) {
+		        if (etals[i].isEtalOccupe() && etals[i].contientProduit(produit)) {
+		            etalsTrouves[index] = etals[i];
+		            index++;
+		        }
+		    }
+		    return etalsTrouves;
 		}
 
 		public Etal trouverVendeur(Gaulois gaulois) {
 			for (int i = 0; i < etals.length; i++) {
-				if (!etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
+				if (etals[i].isEtalOccupe() && gaulois == etals[i].getVendeur()) {
 					return etals[i];
 				}
 			}
 			return null;
 		}
 
-		public afficherMarche() {
-			int nbEtalsLibre = 0;
-			for (int i = 0; i < etals.length; i++) {
-				if (!etals[i].isEtalOccupe()) {
-					nbEtalsLibre++;
-				}
-				System.out.println(etals[i].afficheEtal());
-			}
-			System.out.println("Il reste " + nbEtalVide + " étals non utilisés dans le marché.\n");
+		public String afficherMarche() {
+		    StringBuilder chaine = new StringBuilder();
+		    int nbEtalVide = 0;
+		    
+		    for (int i = 0; i < etals.length; i++) {
+		        if (etals[i].isEtalOccupe()) {
+		            chaine.append(etals[i].afficherEtal());
+		        } else {
+		            nbEtalVide++;
+		        }
+		    }
+		    
+		    if (nbEtalVide > 0) {
+		        chaine.append("Il reste ");
+		        chaine.append(nbEtalVide);
+		        chaine.append(" étals non utilisés dans le marché.\n");
+		    }
+		    return chaine.toString();
 		}
 	}
 }
